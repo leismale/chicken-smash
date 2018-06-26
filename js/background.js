@@ -17,3 +17,7 @@ Background.prototype.loose = function() {
   this.game.ctx.fillText("GAME OVER", 300, 300)
   this.game.ctx.fillText("PRESS ENTER TO START AGAIN", 300, 500)  
 }
+
+Background.prototype.time = function() {
+  this.game.ctx.fillText(this.game.time, 600, 62);
+}

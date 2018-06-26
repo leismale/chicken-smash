@@ -1,4 +1,3 @@
-
 function Game(canvadId) {
   this.canvas = document.getElementById(canvadId);
   this.ctx = this.canvas.getContext("2d");
@@ -17,7 +16,7 @@ Game.prototype.start = function() {
     if (this.framesCounter > 1000) {
       this.framesCounter = 1;
     }
-    if (this.framesCounter % 200 === 0) {
+    if (this.framesCounter % 100 === 0) {
       this.generateObstacle();
     }
 
@@ -25,11 +24,11 @@ Game.prototype.start = function() {
     this.moveObstacles();
     this.treesCollision();
     this.clearObstacles();
-
+    this.checkTime();
+    
     if (this.isCollision()) {
       this.player.img.src = './img/boom.png';
-      this.background.loose();  
-      console.log("Colision")
+      this.background.loose();
       this.gameOver();
     }
     this.win();
@@ -38,6 +37,7 @@ Game.prototype.start = function() {
 
 Game.prototype.stop = function() {
   clearInterval(this.interval);
+  clearInterval(this.interval2);
 };
 
 Game.prototype.win = function() {
@@ -61,9 +61,14 @@ Game.prototype.reset = function() {
   this.trees = new Trees(this);
   this.obstacles = [];
   this.treesArr = [];
-  this.framesCounter = 0;
+  this.framesCounter = 199;
   this.score = 0;
   this.generateTrees();  
+  this.time = 30;
+  this.interval2 = 0;
+  this.interval2 = setInterval(function(){
+    this.time--;
+  }.bind(this),1000)
 };
 
 Game.prototype.isCollision = function() {
@@ -97,7 +102,7 @@ Game.prototype.generateObstacle = function() {
   var imagesLeft = ["./img/mercLeft.png", "./img/blueLeft.png", "./img/vanLeft.png", "./img/convLeft.png"]
   for(var i = 0; i < 3; i++){
     this.obstacles.push(new Obstacle(this, 
-    -this.canvas.width + Math.floor(Math.random()*(600-490+1)+490),
+    -this.canvas.width + Math.floor(Math.random()*(270-130+1)+130),
     this.canvas.height - 150  - i * size,
     // -Math.floor(Math.random()*(2-1.5+1)+1.5),
     -speed[i],
@@ -105,7 +110,7 @@ Game.prototype.generateObstacle = function() {
   }
   for(var i = 3; i < 6; i++){
     this.obstacles.push(new Obstacle(this,
-    this.canvas.width + Math.floor(Math.random()*(600-490+1)+490),
+    this.canvas.width + Math.floor(Math.random()*(270-130+1)+130),
     this.canvas.height - 95  - (i-3) * size - 365,
     // Math.floor(Math.random()*(5-1+1)+1),
     speed[i],
@@ -114,10 +119,16 @@ Game.prototype.generateObstacle = function() {
 };
 
 Game.prototype.generateTrees = function() {
-  var size = 100;
+  var size = 50;
   var imagesTrees = ["./img/car2.png", "./img/carblue.png"]
+  for(var i = 0; i < 4; i++){
+    this.treesArr.push(new Trees(this, 90 + i * size, 360));
+    }
   for(var i = 0; i < 5; i++){
-    this.treesArr.push(new Trees(this, Math.floor(Math.random()*(600-100+1)+100) + i * size, 360));
+    this.treesArr.push(new Trees(this, 525 + i * size, 360));
+    }
+  for(var i = 0; i < 4; i++){
+    this.treesArr.push(new Trees(this, 1010 + i * size, 360));
     }
 };
 
@@ -146,6 +157,7 @@ Game.prototype.draw = function() {
   this.ctx.font = "36px Amatica SC";
   this.ctx.fillStyle = "white";
   this.ctx.fillText("SCORE: " + Math.floor(this.score), 25, 62);
+  this.background.time();
 };
 
 Game.prototype.moveObstacles = function() {
@@ -167,15 +179,15 @@ Game.prototype.setListeners = function() {
       } */
     }
     if (event.keyCode === 37) { //LEFT
-      this.player.x -= 78;
+      this.player.x -= 75;
       if(this.player.x <= this.canvas.width -1300) {
-        this.player.x += 78;
+        this.player.x += 75;
       }
     }
     if (event.keyCode === 39) { //RIGHT
-      this.player.x += 78;
+      this.player.x += 75;
       if(this.player.x >= this.canvas.width) {
-        this.player.x -= 78;
+        this.player.x -= 75;
       }
     }
     if (event.keyCode === 40) { //DOWN
@@ -194,3 +206,10 @@ Game.prototype.setListeners = function() {
       } */
   }.bind(this)
 };
+
+Game.prototype.checkTime = function() {
+  if(this.time <= 0) {
+    this.background.loose();
+    this.gameOver();
+  }
+}
