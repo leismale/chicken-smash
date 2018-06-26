@@ -1,19 +1,14 @@
-
 function Game(canvadId) {
   this.canvas = document.getElementById(canvadId);
   this.ctx = this.canvas.getContext("2d");
   this.fps = 60;
   this.reset();
-  this.lastPosition = [];
-  this.setListeners();
 }
 
 Game.prototype.start = function() {
-  this.speedCars();
   this.interval = setInterval(function() {
     this.clear();
     this.framesCounter++;
-
     if (this.framesCounter > 1000) {
       this.framesCounter = 1;
     }
@@ -22,15 +17,23 @@ Game.prototype.start = function() {
     }
 
     this.draw();
+
+    if (this.framesCounter % 10 === 0) {
+      this.player.up();
+    }
+    if (this.framesCounter % 20 === 0) {
+      this.player.down();  
+    }
     this.moveObstacles();
     this.treesCollision();
+    if (this.obstacleCollision()) {
+      this.obstacle.dx++;
+      console.log("hola")
+    }
     this.clearObstacles();
-
     if (this.isCollision()) {
-      this.player.img.src = './img/boom.png';
-      this.background.loose();  
+      //this.gameOver();
       console.log("Colision")
-      this.gameOver();
     }
     this.win();
   }.bind(this), 800 / this.fps);
@@ -50,9 +53,11 @@ Game.prototype.win = function() {
 }
 
 Game.prototype.gameOver = function() {
-  this.player.x = this.initialx;
-  this.player.y = this.initialy;
   this.stop();
+  if(confirm("Game over. Play again?")) {
+    this.reset();
+    this.start();
+  }
 };
 
 Game.prototype.reset = function() {
@@ -71,8 +76,8 @@ Game.prototype.isCollision = function() {
     return (
       this.player.x >= obstacle.x &&
       this.player.x <= obstacle.x + obstacle.w &&
-      this.player.y >= obstacle.y &&
-      this.player.y <= obstacle.y + obstacle.h
+      this.player.y <= obstacle.y &&
+      this.player.y + this.player.h >= obstacle.y
     )}.bind(this)));
   };
 
@@ -84,53 +89,61 @@ Game.prototype.clearObstacles = function() {
   });
 };
 
-var speed = [];
-Game.prototype.speedCars = function () {
-  for(var i = 0; i < 6; i++){
-    speed[i] = Math.floor(Math.random()*(10-1.5+1)+1.5); 
-  }
-}
-
 Game.prototype.generateObstacle = function() {
   var size = 80;
   var imagesRight = ["./img/miniRight.png", "./img/mercRight.png", "./img/vanRight.png", "./img/convRight.png"]
   var imagesLeft = ["./img/mercLeft.png", "./img/blueLeft.png", "./img/vanLeft.png", "./img/convLeft.png"]
   for(var i = 0; i < 3; i++){
     this.obstacles.push(new Obstacle(this, 
-    -this.canvas.width + Math.floor(Math.random()*(600-490+1)+490),
+    -this.canvas.width + Math.floor(Math.random()*(600-400+1)+400),
     this.canvas.height - 150  - i * size,
-    // -Math.floor(Math.random()*(2-1.5+1)+1.5),
-    -speed[i],
-    imagesRight[Math.floor(Math.random()*(3-0+1)+0)]));
-  }
+    -Math.floor(Math.random()*(2-1.5+1)+1.5),
+    imagesRight[Math.floor(Math.random()*(3-0+1)+0)], i));
+    }
   for(var i = 3; i < 6; i++){
     this.obstacles.push(new Obstacle(this,
-    this.canvas.width + Math.floor(Math.random()*(600-490+1)+490),
+    this.canvas.width + Math.floor(Math.random()*(600-400+1)+400),
     this.canvas.height - 95  - (i-3) * size - 365,
-    // Math.floor(Math.random()*(5-1+1)+1),
-    speed[i],
-    imagesLeft[Math.floor(Math.random()*(3-0+1)+0)]));
+    Math.floor(Math.random()*(5-1+1)+1),
+    imagesLeft[Math.floor(Math.random()*(3-0+1)+0)], i));
+    // console.log(this.obstacles)
   }
 };
 
 Game.prototype.generateTrees = function() {
-  var size = 100;
+  var size = 40;
   var imagesTrees = ["./img/car2.png", "./img/carblue.png"]
-  for(var i = 0; i < 5; i++){
-    this.treesArr.push(new Trees(this, Math.floor(Math.random()*(600-100+1)+100) + i * size, 360));
+  for(var i = 0; i < 3; i++){
+    this.treesArr.push(new Trees(this, 50 + i * size, 370));
+    }
+  for(var i = 0; i < 3; i++){
+    this.treesArr.push(new Trees(this, 600 + i * size, 370));
+    }
+  for(var i = 0; i < 3; i++){
+    this.treesArr.push(new Trees(this, 1120 + i * size, 370));
     }
 };
 
 Game.prototype.treesCollision = function() {
   this.treesArr.forEach(function(tree){
-    if(this.player.x >= tree.x &&
-      this.player.x <= tree.x + tree.w &&
-      this.player.y >= tree.y &&
-      this.player.y <= tree.y + tree.h) {
-      this.player.x = this.lastPosition[this.lastPosition.length -4];
-      this.player.y = this.lastPosition[this.lastPosition.length -3];
+    // console.log(this.player.x)
+    // console.log(tree.x) 
+    if(tree.y <= this.player.y &&
+      tree.y + tree.h >= this.player.y + this.player.h &&
+      tree.x >= this.player.x &&
+      tree.x <= this.player.x + this.player.w){
+      this.player.y -= 79;
     };
   }.bind(this))
+}
+
+Game.prototype.obstacleCollision = function() {
+  var obstacles600 = this.obstacles.filter(function(obstacle) {
+   
+  });
+
+    //  obstacle.x == obstacle.x + obstacle.w
+
 }
 
 Game.prototype.clear = function() {
@@ -140,57 +153,15 @@ Game.prototype.clear = function() {
 Game.prototype.draw = function() {
   this.background.draw();
   this.player.draw();
-  this.lastPosition.push(this.player.x, this.player.y);  
   this.treesArr.forEach(function(tree) { tree.draw(); });
   this.obstacles.forEach(function(obstacle) { obstacle.draw(); });
-  this.ctx.font = "36px Amatica SC";
+  this.ctx.font = "36px sans-serif";
   this.ctx.fillStyle = "white";
-  this.ctx.fillText("SCORE: " + Math.floor(this.score), 25, 62);
+  this.ctx.fillText("Score: " + Math.floor(this.score), 25, 50);
 };
 
 Game.prototype.moveObstacles = function() {
   this.obstacles.forEach(function(obstacle){
       obstacle.move();
     });
-};
-
-
-Game.prototype.setListeners = function() {
-  document.onkeydown = function(event) {
-    if (event.keyCode === 38) { //UP
-      this.player.y -= 78;
-      if(this.player.y <= this.canvas.height -750) {
-        this.player.y += 78;
-      }
-/*       if(this.game.score <= 7) {
-        this.game.score += 1;
-      } */
-    }
-    if (event.keyCode === 37) { //LEFT
-      this.player.x -= 78;
-      if(this.player.x <= this.canvas.width -1300) {
-        this.player.x += 78;
-      }
-    }
-    if (event.keyCode === 39) { //RIGHT
-      this.player.x += 78;
-      if(this.player.x >= this.canvas.width) {
-        this.player.x -= 78;
-      }
-    }
-    if (event.keyCode === 40) { //DOWN
-      this.player.y += 78;
-      if(this.player.y >= this.canvas.height) {
-        this.player.y -= 78;
-      }
-    }
-    if (event.keyCode === 13) { //ENTER
-      this.stop();
-      this.reset();
-      this.start();
-    } 
-/*       if(this.game.score > 0) {
-        this.game.score--        
-      } */
-  }.bind(this)
 };
