@@ -4,7 +4,7 @@ function Game(canvadId) {
   this.fps = 60;
   this.reset();
   this.lastPosition = [];
-  this.setListeners();
+  this.time = 3000;
 }
 
 Game.prototype.start = function() {
@@ -12,26 +12,33 @@ Game.prototype.start = function() {
   this.interval = setInterval(function() {
     this.clear();
     this.framesCounter++;
-
     if (this.framesCounter > 1000) {
       this.framesCounter = 1;
     }
     if (this.framesCounter % 100 === 0) {
       this.generateObstacle();
     }
-
-    this.draw();
-    this.moveObstacles();
-    this.treesCollision();
-    this.clearObstacles();
-    this.checkTime();
     
-    if (this.isCollision()) {
-      this.player.img.src = './img/boom.png';
-      this.background.loose();
-      this.gameOver();
-    }
-    this.win();
+    this.moveObstacles();
+    this.draw();
+    if(this.background.counter <= 360 && this.background.counter > 0){
+      this.background.countDown();
+      this.background.counter--;
+      console.log(this.background.counter)
+    }  else if (this.background.counter == 0){
+      this.setListeners();          //Ver como quiar los listeners cuando hago reset con intro
+      this.counter();
+      this.treesCollision();
+      this.clearObstacles();
+      this.checkTime();
+      
+      if (this.isCollision()) {
+        this.player.img.src = './img/boom.png';
+        this.background.lose();
+        this.gameOver();
+      }
+      this.win();
+  }
   }.bind(this), 800 / this.fps);
 };
 
@@ -63,12 +70,7 @@ Game.prototype.reset = function() {
   this.treesArr = [];
   this.framesCounter = 199;
   this.score = 0;
-  this.generateTrees();  
-  this.time = 30;
-  this.interval2 = 0;
-  this.interval2 = setInterval(function(){
-    this.time--;
-  }.bind(this),1000)
+  this.generateTrees();
 };
 
 Game.prototype.isCollision = function() {
@@ -92,29 +94,29 @@ Game.prototype.clearObstacles = function() {
 var speed = [];
 Game.prototype.speedCars = function () {
   for(var i = 0; i < 6; i++){
-    speed[i] = Math.floor(Math.random()*(10-1.5+1)+1.5); 
+    speed[i] = Math.floor(Math.random()*(10-2+1)+2); 
   }
 }
 
 Game.prototype.generateObstacle = function() {
   var size = 80;
-  var imagesRight = ["./img/miniRight.png", "./img/mercRight.png", "./img/vanRight.png", "./img/convRight.png"]
-  var imagesLeft = ["./img/mercLeft.png", "./img/blueLeft.png", "./img/vanLeft.png", "./img/convLeft.png"]
+  var imagesRight = ["", "./img/blueRight.png", "./img/bugRight.png", "./img/convRight.png", "./img/mercRight.png", "./img/miniRight.png", "./img/redRight.png", "./img/vanRight.png"]
+  var imagesLeft = ["", "./img/blueLeft.png", "./img/bugLeft.png", "./img/convLeft.png", "./img/mercLeft.png", "./img/miniLeft.png", "./img/redLeft.png", "./img/vanLeft.png"]
   for(var i = 0; i < 3; i++){
     this.obstacles.push(new Obstacle(this, 
-    -this.canvas.width + Math.floor(Math.random()*(270-130+1)+130),
+    -this.canvas.width + Math.floor(Math.random()*(340-250+1)+250),
     this.canvas.height - 150  - i * size,
     // -Math.floor(Math.random()*(2-1.5+1)+1.5),
     -speed[i],
-    imagesRight[Math.floor(Math.random()*(3-0+1)+0)]));
+    imagesRight[Math.floor(Math.random()*(7-0+1)+0)]));
   }
   for(var i = 3; i < 6; i++){
     this.obstacles.push(new Obstacle(this,
-    this.canvas.width + Math.floor(Math.random()*(270-130+1)+130),
+    this.canvas.width + Math.floor(Math.random()*(340-250+1)+250),
     this.canvas.height - 95  - (i-3) * size - 365,
     // Math.floor(Math.random()*(5-1+1)+1),
     speed[i],
-    imagesLeft[Math.floor(Math.random()*(3-0+1)+0)]));
+    imagesLeft[Math.floor(Math.random()*(7-0+1)+0)]));
   }
 };
 
@@ -122,13 +124,13 @@ Game.prototype.generateTrees = function() {
   var size = 50;
   var imagesTrees = ["./img/car2.png", "./img/carblue.png"]
   for(var i = 0; i < 4; i++){
-    this.treesArr.push(new Trees(this, 90 + i * size, 360));
+    this.treesArr.push(new Trees(this, 90 + i * size, 366));
     }
   for(var i = 0; i < 5; i++){
-    this.treesArr.push(new Trees(this, 525 + i * size, 360));
+    this.treesArr.push(new Trees(this, 525 + i * size, 366));
     }
   for(var i = 0; i < 4; i++){
-    this.treesArr.push(new Trees(this, 1010 + i * size, 360));
+    this.treesArr.push(new Trees(this, 1010 + i * size, 366));
     }
 };
 
@@ -200,6 +202,7 @@ Game.prototype.setListeners = function() {
       this.stop();
       this.reset();
       this.start();
+      this.time = 3000;
     } 
 /*       if(this.game.score > 0) {
         this.game.score--        
@@ -209,7 +212,16 @@ Game.prototype.setListeners = function() {
 
 Game.prototype.checkTime = function() {
   if(this.time <= 0) {
-    this.background.loose();
+    this.background.lose();
     this.gameOver();
   }
+}
+
+Game.prototype.counter = function(){
+  this.time--;
+  /*  this.interval2 = 0;
+  this.interval2 = setInterval(function(){
+    this.time--;
+  }.bind(this), 1000);
+  */
 }
