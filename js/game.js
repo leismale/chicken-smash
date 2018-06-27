@@ -7,8 +7,10 @@ function Game(canvadId) {
   this.lastPosition = [];
   this.time = 3000;
   this.increment = 2;  
+  this.generateObsRate = 150;
+  this.score = 0;
 }
-Game.prototype.start = function(maxSpeed) {
+Game.prototype.start = function(maxSpeed, generateObsRate) {
   this.speedCars(maxSpeed);
   this.interval = setInterval(function() {
     this.clear();
@@ -16,7 +18,7 @@ Game.prototype.start = function(maxSpeed) {
     if (this.framesCounter > 1000) {
       this.framesCounter = 1;
     }
-    if (this.framesCounter % 150 === 0) {
+    if (this.framesCounter % generateObsRate === 0) {
      this.generateObstacle();
     }
     
@@ -34,6 +36,7 @@ Game.prototype.start = function(maxSpeed) {
       this.counter();
       this.treesCollision();
       if (this.isCollision()) {
+        this.disableKeyboard();
         this.background.lose();
         this.gameOver();
       }
@@ -51,21 +54,23 @@ Game.prototype.stop = function() {
 
 Game.prototype.win = function() {
   this.increment++;
+  this.generateObsRate -= 0.05;
   if(this.player.y <= 100) {
     this.background.nextLevel();
     this.background.counter = 360;
     this.stop();
-    this.newGame(this.increment/100);
+    this.newGame(this.increment/100, Math.round(this.generateObsRate));
     this.score++;
     console.log(this.increment/100)
+    console.log(this.generateObsRate)
   }
 }
 
-Game.prototype.newGame = function(increment) {
+Game.prototype.newGame = function(increment,generateObsRate) {
   if(!increment){
-    this.start(3);
+    this.start(3, 150);
       } else{
-        this.start(3 + increment);
+        this.start(3 + increment, generateObsRate);
       }
 }
 
@@ -73,6 +78,8 @@ Game.prototype.gameOver = function() {
   this.player.x = this.initialx;
   this.player.y = this.initialy;
   this.stop();
+  this.score = 0;
+  this.disableKeyboard();  
 };
 
 Game.prototype.reset = function() {
@@ -83,7 +90,6 @@ Game.prototype.reset = function() {
   this.treesArr = [];
   this.framesCounter = 199;
   this.time = 3000;
-  this.score = 0;
   this.generateTrees();
 };
 
@@ -214,8 +220,9 @@ Game.prototype.disableKeyboard = function() {
   {
     if (event.keyCode === 13) { //ENTER
       this.stop();
+      console.log("hola")
       this.reset();
-      this.start(3);
+      this.newGame(3);
       this.time = 3000;
     } else{
    return false;
