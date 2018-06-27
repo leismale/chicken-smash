@@ -25,8 +25,12 @@ Game.prototype.start = function(maxSpeed, generateObsRate) {
     this.draw();
     this.moveObstacles();
     this.clearObstacles();
+
     if(this.background.counter <= 360 && this.background.counter > 0){
       this.background.countDown();
+      if(this.score > 0){
+        this.background.nextLevel();
+      }
       this.background.counter--;
       this.player.x = this.player.initialx;
       this.player.y = this.player.initialy;
@@ -61,8 +65,6 @@ Game.prototype.win = function() {
     this.stop();
     this.newGame(this.increment/100, Math.round(this.generateObsRate));
     this.score++;
-    console.log(this.increment/100)
-    console.log(this.generateObsRate)
   }
 }
 
@@ -94,7 +96,6 @@ Game.prototype.reset = function() {
 };
 
 Game.prototype.isCollision = function() {
-  
   return (this.obstacles.some(function(obstacle) {
     return (
       this.player.x + this.player.w >= obstacle.x &&
@@ -220,7 +221,6 @@ Game.prototype.disableKeyboard = function() {
   {
     if (event.keyCode === 13) { //ENTER
       this.stop();
-      console.log("hola")
       this.reset();
       this.newGame(3);
       this.time = 3000;
