@@ -16,18 +16,29 @@ Background.prototype.draw = function() {
 };
 
 Background.prototype.countDown = function() {
-  this.game.ctx.fillStyle = "black";  
+  this.game.ctx.fillStyle = "white";  
   this.game.ctx.font = "100px Amatica SC";
   this.game.ctx.drawImage(this.img3, this.x, this.y, 1300, 750);
   this.game.ctx.fillText(Math.floor(this.counter/100), 580, 400);
 }
 
 Background.prototype.lose = function() {
+  this.game.ctx.fillStyle = "white";  
+  this.game.ctx.font = "100px Amatica SC";
   this.game.ctx.drawImage(this.img2, this.x, this.y, 1300, 750);
-  this.game.ctx.fillText("GAME OVER", 300, 300);
-  this.game.ctx.fillText("PRESS ENTER TO START AGAIN", 300, 500)  ;
+  this.game.ctx.drawImage(this.img3, this.x, this.y, 1300, 750);
+  this.game.ctx.fillText("GAME OVER", 350, 275);
+  this.game.ctx.font = "80px Amatica SC";
+  this.game.ctx.fillText("PRESS ENTER TO START AGAIN", 55, 500);
 }
 
 Background.prototype.time = function() {
   this.game.ctx.fillText(Math.floor(this.game.time/100), 600, 62);
+}
+
+Background.prototype.nextLevel = function() {
+  this.game.ctx.fillStyle = "white";  
+  this.game.ctx.font = "100px Amatica SC";
+  //this.game.ctx.drawImage(this.img2, this.x, this.y, 1300, 750);
+  this.game.ctx.fillText("NEXT LEVEL", 350, 350);
 }

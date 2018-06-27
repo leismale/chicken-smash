@@ -27,6 +27,6 @@ body button {
   margin-bottom: 20px;
 }
 
-canvas {
-  border: 2px solid black;
+.hidden {
+  display: none;
 }

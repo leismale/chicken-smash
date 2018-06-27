@@ -2,27 +2,34 @@ function Game(canvadId) {
   this.canvas = document.getElementById(canvadId);
   this.ctx = this.canvas.getContext("2d");
   this.fps = 60;
-  this.newGame();
   this.reset();
   this.lastPosition = [];
   this.time = 3000;
-  this.increment = 2;  
 }
-Game.prototype.start = function(maxSpeed) {
-  this.speedCars(maxSpeed);
+
+Game.prototype.start = function() {
+  this.speedCars();
   this.interval = setInterval(function() {
     this.clear();
     this.framesCounter++;
     if (this.framesCounter > 1000) {
       this.framesCounter = 1;
     }
-    if (this.framesCounter % 150 === 0) {
+    if (this.framesCounter % 100 === 0) {
      this.generateObstacle();
     }
     
     this.draw();
     this.moveObstacles();
+    this.treesCollision();
     this.clearObstacles();
+    
+    if (this.isCollision()) {
+      console.log("coche")
+      this.background.lose();
+      this.gameOver();
+    }
+    
     if(this.background.counter <= 360 && this.background.counter > 0){
       this.background.countDown();
       this.background.counter--;
@@ -30,43 +37,26 @@ Game.prototype.start = function(maxSpeed) {
       this.player.y = this.player.initialy;
       this.disableKeyboard();
     }  else if (this.background.counter == 0){
-      this.setListeners();
-      this.counter();
-      this.treesCollision();
-      if (this.isCollision()) {
-        this.background.lose();
-        this.gameOver();
-      }
       this.checkTime();
       this.win();
+      this.setListeners();
+      this.counter();
     }
   }.bind(this), 800 / this.fps);
 };
 
 Game.prototype.stop = function() {
   clearInterval(this.interval);
-  this.setListeners(false);
-  this.reset();
+  clearInterval(this.interval2);
+  this.setListeners(false)
+  this.reset()  
 };
 
 Game.prototype.win = function() {
-  this.increment++;
   if(this.player.y <= 100) {
     this.background.nextLevel();
-    this.background.counter = 360;
-    this.stop();
-    this.newGame(this.increment/100);
-    this.score++;
-    console.log(this.increment/100)
+    
   }
-}
-
-Game.prototype.newGame = function(increment) {
-  if(!increment){
-    this.start(3);
-      } else{
-        this.start(3 + increment);
-      }
 }
 
 Game.prototype.gameOver = function() {
@@ -82,7 +72,6 @@ Game.prototype.reset = function() {
   this.obstacles = [];
   this.treesArr = [];
   this.framesCounter = 199;
-  this.time = 3000;
   this.score = 0;
   this.generateTrees();
 };
@@ -90,11 +79,26 @@ Game.prototype.reset = function() {
 Game.prototype.isCollision = function() {
   
   return (this.obstacles.some(function(obstacle) {
+    // console.log(this.player.x)
+    // console.log(obstacle.x)
+    // console.log(this.player.y)
+    // console.log(obstacle.y)
     return (
-      this.player.x + this.player.w >= obstacle.x &&
+      this.player.x >= obstacle.x &&
       this.player.x <= obstacle.x + obstacle.w &&
-      this.player.y + this.player.h >= obstacle.y &&
+      this.player.y >= obstacle.y &&
       this.player.y <= obstacle.y + obstacle.h
+
+/*       this.player.x + this.player.w >= obstacle.x &&
+      this.player.x < obstacle.x + obstacle.w &&
+      this.player.y + this.player.h > obstacle.y &&
+      this.player.y < obstacle.y + obstacle.h */
+
+
+/*       this.player.x >= obstacle.x &&
+      this.player.x +this.player.w <= obstacle.x + obstacle.w &&
+      this.player.y >= obstacle.y &&
+      this.player.y + this.player.h <= obstacle.y + obstacle.h */
     )}.bind(this)));
   };
 
@@ -119,29 +123,29 @@ Game.prototype.treesCollision = function() {
 }
 
 var speed = [];
-Game.prototype.speedCars = function (maxSpeed) {
+Game.prototype.speedCars = function () {
   for(var i = 0; i < 6; i++){
-    speed[i] = Math.floor(Math.random()*(maxSpeed-2+1)+2); 
+    speed[i] = Math.floor(Math.random()*(10-2+1)+2); 
   }
 }
 
 Game.prototype.generateObstacle = function() {
   var size = 80;
-  var imagesRight = ["./img/blueRight.png", "./img/bugRight.png", "./img/convRight.png", "./img/mercRight.png", "./img/miniRight.png", "./img/redRight.png", "./img/vanRight.png"]
-  var imagesLeft = ["./img/blueLeft.png", "./img/bugLeft.png", "./img/convLeft.png", "./img/mercLeft.png", "./img/miniLeft.png", "./img/redLeft.png", "./img/vanLeft.png"]
+  var imagesRight = ["", "./img/blueRight.png", "./img/bugRight.png", "./img/convRight.png", "./img/mercRight.png", "./img/miniRight.png", "./img/redRight.png", "./img/vanRight.png"]
+  var imagesLeft = ["", "./img/blueLeft.png", "./img/bugLeft.png", "./img/convLeft.png", "./img/mercLeft.png", "./img/miniLeft.png", "./img/redLeft.png", "./img/vanLeft.png"]
   for(var i = 0; i < 3; i++){
     this.obstacles.push(new Obstacle(this, 
-    -this.canvas.width + Math.floor(Math.random()*(440-350+1)+350),
+    -this.canvas.width + Math.floor(Math.random()*(340-250+1)+250),
     this.canvas.height - 150  - i * size,
     -speed[i],
-    imagesRight[Math.floor(Math.random()*(6-0+1)+0)]));
+    imagesRight[Math.floor(Math.random()*(7-0+1)+0)]));
   }
   for(var i = 3; i < 6; i++){
     this.obstacles.push(new Obstacle(this,
-    this.canvas.width + Math.floor(Math.random()*(440-350+1)+350),
+    this.canvas.width + Math.floor(Math.random()*(340-250+1)+250),
     this.canvas.height - 95  - (i-3) * size - 365,
     speed[i],
-    imagesLeft[Math.floor(Math.random()*(6-0+1)+0)]));
+    imagesLeft[Math.floor(Math.random()*(7-0+1)+0)]));
   }
 };
 
@@ -158,6 +162,7 @@ Game.prototype.generateTrees = function() {
     }
 };
 
+
 Game.prototype.clear = function() {
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 };
@@ -170,7 +175,7 @@ Game.prototype.draw = function() {
   this.obstacles.forEach(function(obstacle) { obstacle.draw(); });
   this.ctx.font = "36px Amatica SC";
   this.ctx.fillStyle = "white";
-  this.ctx.fillText("SCORE: " + this.score, 25, 62);
+  this.ctx.fillText("SCORE: " + Math.floor(this.score), 25, 62);
   this.background.time();
 };
 
@@ -206,21 +211,20 @@ Game.prototype.setListeners = function() {
         this.player.y -= 78;
       }
     }
+    if (event.keyCode === 13) { //ENTER
+      this.stop();
+      this.reset();
+      this.start();
+      this.time = 3000;
+    }
   }.bind(this)
 };
 
 Game.prototype.disableKeyboard = function() {
   document.onkeydown = function (e) 
   {
-    if (event.keyCode === 13) { //ENTER
-      this.stop();
-      this.reset();
-      this.start(3);
-      this.time = 3000;
-    } else{
    return false;
   }
-}.bind(this)
 }
 
 Game.prototype.checkTime = function() {
@@ -233,4 +237,3 @@ Game.prototype.checkTime = function() {
 Game.prototype.counter = function(){
   this.time--;
 }
-
