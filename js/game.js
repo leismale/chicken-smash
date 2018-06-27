@@ -40,6 +40,7 @@ Game.prototype.start = function(maxSpeed, generateObsRate) {
       this.counter();
       this.treesCollision();
       if (this.isCollision()) {
+        this.sound.crash.play();
         this.disableKeyboard();
         this.background.lose();
         this.gameOver();
@@ -88,6 +89,7 @@ Game.prototype.reset = function() {
   this.background = new Background(this);
   this.player = new Player(this);
   this.trees = new Trees(this);
+  this.sound = new Sound(this);
   this.obstacles = [];
   this.treesArr = [];
   this.framesCounter = 199;
@@ -188,26 +190,31 @@ Game.prototype.moveObstacles = function() {
 };
 
 Game.prototype.setListeners = function() {
+
     document.onkeydown = function(event) {
     if (event.keyCode === 38) { //UP
       this.player.y -= 78;
+      this.sound.jump.play();
       if(this.player.y <= this.canvas.height -750) {
         this.player.y += 78;
       }
     }
     if (event.keyCode === 37) { //LEFT
       this.player.x -= 75;
+      this.sound.jump.play();
       if(this.player.x <= this.canvas.width -1300) {
         this.player.x += 75;
       }
     }
     if (event.keyCode === 39) { //RIGHT
+      this.sound.jump.play();
       this.player.x += 75;
       if(this.player.x >= this.canvas.width) {
         this.player.x -= 75;
       }
     }
     if (event.keyCode === 40) { //DOWN
+      this.sound.jump.play();
       this.player.y += 78;
       if(this.player.y >= this.canvas.height) {
         this.player.y -= 78;
@@ -239,5 +246,5 @@ Game.prototype.checkTime = function() {
 
 Game.prototype.counter = function(){
   this.time--;
+  this.sound.cars.play();
 }
-
