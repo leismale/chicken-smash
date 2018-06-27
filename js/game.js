@@ -8,7 +8,7 @@ function Game(canvadId) {
   this.time = 3000;
   this.increment = 2;  
   this.generateObsRate = 150;
-  this.score = 0;
+  this.score = 1;
 }
 Game.prototype.start = function(maxSpeed, generateObsRate) {
   this.speedCars(maxSpeed);
@@ -28,7 +28,7 @@ Game.prototype.start = function(maxSpeed, generateObsRate) {
 
     if(this.background.counter <= 360 && this.background.counter > 0){
       this.background.countDown();
-      if(this.score > 0){
+      if(this.score > 1){
         this.background.nextLevel();
       }
       this.background.counter--;
@@ -81,8 +81,10 @@ Game.prototype.gameOver = function() {
   this.player.x = this.initialx;
   this.player.y = this.initialy;
   this.stop();
-  this.score = 0;
-  this.disableKeyboard();  
+  this.score = 1;
+  this.increment = 2;
+  this.generateObsRate = 150; 
+  this.disableKeyboard();
 };
 
 Game.prototype.reset = function() {
@@ -179,7 +181,7 @@ Game.prototype.draw = function() {
   this.obstacles.forEach(function(obstacle) { obstacle.draw(); });
   this.ctx.font = "36px Amatica SC";
   this.ctx.fillStyle = "white";
-  this.ctx.fillText("SCORE: " + this.score, 25, 62);
+  this.ctx.fillText("LEVEL: " + this.score, 25, 62);
   this.background.time();
 };
 
@@ -229,7 +231,7 @@ Game.prototype.disableKeyboard = function() {
     if (event.keyCode === 13) { //ENTER
       this.stop();
       this.reset();
-      this.newGame(3);
+      this.newGame(3,150);
       this.time = 3000;
     } else{
    return false;

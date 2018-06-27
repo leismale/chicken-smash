@@ -8,6 +8,10 @@ function Background(game) {
   this.img2.src = 'img/overlay.png';
   this.img3 = new Image();
   this.img3.src = 'img/overlay2.png';
+  this.img4 = new Image();
+  this.img4.src = 'img/chickenWin.png';
+  this.img5 = new Image();
+  this.img5.src = 'img/Untitled.png';
   this.counter = 360;
 }
 
@@ -23,10 +27,11 @@ Background.prototype.countDown = function() {
 }
 
 Background.prototype.lose = function() {
-  this.game.ctx.fillStyle = "white";  
+  this.game.ctx.fillStyle = "black";  
   this.game.ctx.font = "100px Amatica SC";
   this.game.ctx.drawImage(this.img2, this.x, this.y, 1300, 750);
   this.game.ctx.drawImage(this.img3, this.x, this.y, 1300, 750);
+  this.game.ctx.drawImage(this.img5, this.x, this.y, 1300, 750);
   this.game.ctx.fillText("GAME OVER", 350, 275);
   this.game.ctx.font = "80px Amatica SC";
   this.game.ctx.fillText("PRESS ENTER TO START AGAIN", 55, 500);
@@ -37,6 +42,7 @@ Background.prototype.time = function() {
 }
 
 Background.prototype.nextLevel = function() {
+  this.game.ctx.drawImage(this.img4, 460, 450, 400, 250);
   this.game.ctx.fillStyle = "white";  
   this.game.ctx.font = "100px Amatica SC";
   this.game.ctx.fillText("NEXT LEVEL", 350, 300);
