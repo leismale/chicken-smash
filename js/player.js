@@ -2,16 +2,16 @@ function Player(game) {
   this.game = game;
   this.width = game.canvas.width * 0.04;
   this.height = game.canvas.height * 0.05;
-  this.x = this.game.canvas.width -750;
+  this.x = this.game.canvas.width - 750;
   this.y = this.game.canvas.height - 60;
   this.w = this.width;
   this.h = this.height;
   this.img = new Image();
-  this.img.src = './img/sprite.png';
+  this.img.src = "./img/sprite.png";
   this.img.frames = 3;
   this.img.frameIndex = 0;
-  this.initialx = this.game.canvas.width -750;
-  this.initialy = this.game.canvas.height -60;
+  this.initialx = this.game.canvas.width - 750;
+  this.initialy = this.game.canvas.height - 60;
 }
 
 Player.prototype.draw = function() {
@@ -24,7 +24,8 @@ Player.prototype.draw = function() {
     this.x,
     this.y,
     this.width,
-    this.height);
+    this.height
+  );
   this.animateImg();
 };
 

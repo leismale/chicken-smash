@@ -10,7 +10,7 @@ function Obstacle(game, x, y, dx, image) {
 }
 
 Obstacle.prototype.draw = function() {
-  this.game.ctx.shadowColor = 'black';
+  this.game.ctx.shadowColor = "black";
   this.game.ctx.shadowBlur = 25;
   this.game.ctx.drawImage(this.imgTop, this.x, this.y, this.w, this.h);
 };
