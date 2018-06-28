@@ -20,14 +20,12 @@ Background.prototype.draw = function() {
 };
 
 Background.prototype.countDown = function() {
-  this.game.ctx.fillStyle = "white";  
   this.game.ctx.font = "100px Amatica SC";
   this.game.ctx.drawImage(this.img3, this.x, this.y, 1300, 750);
   this.game.ctx.fillText(Math.floor(this.counter/100), 600, 400);
 }
 
 Background.prototype.lose = function() {
-  this.game.ctx.fillStyle = "black";  
   this.game.ctx.font = "100px Amatica SC";
   this.game.ctx.drawImage(this.img2, this.x, this.y, 1300, 750);
   this.game.ctx.drawImage(this.img3, this.x, this.y, 1300, 750);
@@ -43,7 +41,6 @@ Background.prototype.time = function() {
 
 Background.prototype.nextLevel = function() {
   this.game.ctx.drawImage(this.img4, 460, 450, 400, 250);
-  this.game.ctx.fillStyle = "white";  
   this.game.ctx.font = "100px Amatica SC";
   this.game.ctx.fillText("NEXT LEVEL", 350, 300);
 }

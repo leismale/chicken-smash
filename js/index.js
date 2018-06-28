@@ -4,9 +4,9 @@ window.onload = function() {
   }.bind(this))
 
 
-  $('#cosas').bind('click', function(){
-    $(this).toggle("shake", { direction: "up", times: 4, distance: 40 }, 1500);
-    $("#canvas").fadeToggle( 4000, "linear" )
+  $('#chicken').bind('click', function(){
+    $(this).toggle("shake", { direction: "up", times: 2, distance: 40 }, 800);
+    $("#canvas").slideToggle( 100, "linear" )
     var game = new Game("canvas");
 });
 };

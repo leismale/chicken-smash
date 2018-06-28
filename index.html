@@ -6,15 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="./css/style.css">
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-  <script
-  src="https://code.jquery.com/jquery-2.2.4.min.js"
-  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-  crossorigin="anonymous"></script>
-  <script
-  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-  crossorigin="anonymous"></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+    crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+    crossorigin="anonymous"></script>
   <!-- <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script></head> -->
   <script type="text/javascript" src="js/background.js"></script>
   <script type="text/javascript" src="js/player.js"></script>
@@ -27,16 +24,43 @@
 </head>
 
 <body>
-  <!--   <img src="./img/logo.png" alt="" style="width:50%">
-  <br> -->
-<!--   <button id="jump">Normal mode</button> -->
 
-    <div id="cosas" class="container">
-      <img src="./img/chickenCrash.png">
+  <div class="container">
+    <div class="text">
+      <svg viewBox="0 0 1418 116" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- <g stroke="none" fill="none" fill-rule="evenodd" fill-opacity="0"> -->
+        <text id="chicken-smash" font-weight="normal" font-family="Amatica SC" font-size="80">
+          <tspan x="250" y="100">
+            <tspan>C</tspan>
+            <tspan>h</tspan>
+            <tspan>i</tspan>
+            <tspan>c</tspan>
+            <tspan>k</tspan>
+            <tspan>e</tspan>
+            <tspan>n</tspan>
+            <tspan>-</tspan>
+            <tspan>S</tspan>
+            <tspan>m</tspan>
+            <tspan>a</tspan>
+            <tspan>s</tspan>
+            <tspan>h</tspan>
+          </tspan>
+        </text>
+        </g>
+      </svg>
     </div>
-  <div id="game-board">
-    <canvas id="canvas" height="750px" width="1300px" class="hidden"></canvas>
   </div>
+  <div class="container" id="wrapper">
+    <div id="chicken">
+      <img src="./img/chickenCrash.png">
+      <h2 class="click">Click on the chicken to play</h2>
+    </div>
+    <div id="game-board">
+      <canvas id="canvas" height="750px" width="1300px" class="hidden"></canvas>
+    </div>
+  </div>
+
+
 </body>
 
 </html>
