@@ -1,4 +1,3 @@
-// function Trees(game, x, y, image) {
 function Trees(game, x, y) {
     this.game = game;
     this.x = x;
@@ -10,7 +9,6 @@ function Trees(game, x, y) {
 }
 
 Trees.prototype.draw = function() {
-    // this.game.ctx.fillRect(this.x, this.y, this.w, this.h)
     this.game.ctx.drawImage(this.imgTop, this.x, this.y, this.w, this.h);
 };
 

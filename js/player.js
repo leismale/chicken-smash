@@ -10,17 +10,12 @@ function Player(game) {
   this.img.src = './img/sprite.png';
   this.img.frames = 3;
   this.img.frameIndex = 0;
-  this.initialW = game.canvas.width * 0.04;
-  this.initialH = game.canvas.height * 0.05;
   this.initialx = this.game.canvas.width -750;
   this.initialy = this.game.canvas.height -60;
 }
 
 Player.prototype.draw = function() {
-  // this.game.ctx.drawImage(this.img, this.x, this.y, this.w, this.h)
-
   this.game.ctx.drawImage(
-
     this.img,
     this.img.frameIndex * Math.floor(this.img.width / this.img.frames),
     0,

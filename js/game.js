@@ -53,19 +53,19 @@ Game.prototype.start = function(maxSpeed, generateObsRate) {
 
 Game.prototype.stop = function() {
   clearInterval(this.interval);
-  this.setListeners(false);
+  this.setListeners();
   this.reset();
 };
 
 Game.prototype.win = function() {
-  this.increment++;
-  this.generateObsRate -= 0.05;
   if(this.player.y <= 100) {
+    this.increment++;
+    this.generateObsRate -= 5;
     this.sound.win.play();
     this.background.nextLevel();
     this.background.counter = 360;
     this.stop();
-    this.newGame(this.increment/100, Math.round(this.generateObsRate));
+    this.newGame(this.increment, Math.round(this.generateObsRate));
     this.score++;
   }
 }
