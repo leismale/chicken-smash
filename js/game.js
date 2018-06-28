@@ -61,6 +61,7 @@ Game.prototype.win = function() {
   this.increment++;
   this.generateObsRate -= 0.05;
   if(this.player.y <= 100) {
+    this.sound.win.play();
     this.background.nextLevel();
     this.background.counter = 360;
     this.stop();

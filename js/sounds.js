@@ -20,7 +20,8 @@ function handleLoad(event) {
 
 function Sound(game) {
     this.game = game;
-    this.jump = new Audio('./sounds/jump.mp3');
-    this.crash = new Audio('./sounds/crash.mp3')
-    this.cars = new Audio('./sounds/carPassing.mp3')
+    this.jump = new Audio("./sounds/jump.mp3");
+    this.crash = new Audio("./sounds/crash.mp3")
+    this.cars = new Audio("./sounds/carPassing.mp3")
+    this.win = new Audio("./sounds/chicken.mp3")
 }
