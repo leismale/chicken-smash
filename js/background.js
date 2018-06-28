@@ -11,7 +11,7 @@ function Background(game) {
   this.img4 = new Image();
   this.img4.src = 'img/chickenWin.png';
   this.img5 = new Image();
-  this.img5.src = 'img/Untitled.png';
+  this.img5.src = 'img/chickenCrashOverlay.png';
   this.counter = 360;
 }
 
