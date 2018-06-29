@@ -37,16 +37,19 @@ Game.prototype.start = function(maxSpeed, generateObsRate) {
         this.player.x = this.player.initialx;
         this.player.y = this.player.initialy;
         this.disableKeyboard();
-      } else if (this.background.counter == 0) {
+      }
+       else if (this.background.counter == 0) {
         this.setListeners();
         this.counter();
         this.treesCollision();
+
         if (this.isCollision()) {
           this.sound.crash.play();
           this.disableKeyboard();
           this.background.lose();
           this.gameOver();
         }
+        
         this.checkTime();
         this.win();
       }
