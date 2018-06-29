@@ -1,13 +1,13 @@
 # Chicken Smash
 
-Simple 2D version of Crossy road / Frogger
+Version 2D de Crossy road / Frogger
 
 ![Problem](/img/crossyRoad.gif)
 ![Problem](/img/frogger.gif)
 
-## How to play
+## Como jugar
 
-Click on the chicken to play, then use the arrows to move the chicken.
+Pulsa en la gallina para jugar, para moverte usa las flechas del teclado.
 
 https://leismale.github.io/chicken-smash/
 
@@ -22,5 +22,5 @@ https://leismale.github.io/chicken-smash/
 ## Si empezara de cero ¿Cómo organizaría el proyecto?
 ![Start again](/img/startAgain.png)
 
-## ¡Enseña tu código!: Un detalle técnico interesante sobre mi proyecto
+## ¡Enseña tu código! Un detalle técnico interesante sobre mi proyecto
 ![Problem](/img/biggestProblem.png)
