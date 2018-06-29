@@ -1,5 +1,5 @@
 window.onload = function() {
-  $("#chicken").effect("shake", { direction: "up", times: 2, distance: 30 }, 1000);
+  $("#chicken").effect("shake", { direction: "up", times: 4, distance: 30 }, 1000);
   
   $("#chicken").bind("click", function(){
     $("#chicken").off("click");
